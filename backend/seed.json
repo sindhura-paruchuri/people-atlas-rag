@@ -1,0 +1,74 @@
+[
+  {
+    "id": "p001",
+    "name": "Maya Chen",
+    "role": "Senior ML Engineer",
+    "location": "Austin, TX",
+    "bio": "Builds retrieval pipelines and evaluates grounded answers for enterprise knowledge systems.",
+    "skills": [
+      "Python",
+      "RAG",
+      "Pinecone"
+    ]
+  },
+  {
+    "id": "p002",
+    "name": "Arjun Rao",
+    "role": "Data Engineer",
+    "location": "Dallas, TX",
+    "bio": "Designs reliable ingestion pipelines, SQL data models, and cloud data platforms.",
+    "skills": [
+      "Python",
+      "MySQL",
+      "AWS"
+    ]
+  },
+  {
+    "id": "p003",
+    "name": "Sofia Martinez",
+    "role": "Full Stack Engineer",
+    "location": "Miami, FL",
+    "bio": "Creates accessible interfaces and FastAPI services for AI applications.",
+    "skills": [
+      "React",
+      "TypeScript",
+      "Python"
+    ]
+  },
+  {
+    "id": "p004",
+    "name": "Jordan Williams",
+    "role": "AI Platform Engineer",
+    "location": "Austin, TX",
+    "bio": "Runs containerized agent services and builds secure tools for language models.",
+    "skills": [
+      "Docker",
+      "MCP",
+      "Python"
+    ]
+  },
+  {
+    "id": "p005",
+    "name": "Priya Shah",
+    "role": "Applied Scientist",
+    "location": "Seattle, WA",
+    "bio": "Develops retrieval benchmarks and measures answer quality with human feedback.",
+    "skills": [
+      "Evaluation",
+      "RAG",
+      "PyTorch"
+    ]
+  },
+  {
+    "id": "p006",
+    "name": "Ethan Brooks",
+    "role": "Backend Engineer",
+    "location": "New York, NY",
+    "bio": "Builds database APIs, service authentication, and observable distributed systems.",
+    "skills": [
+      "MySQL",
+      "FastAPI",
+      "Docker"
+    ]
+  }
+]

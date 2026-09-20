@@ -1,0 +1,7 @@
+'use client';
+import {useState} from 'react';
+export default function PreferenceReview({queryId,live}:{queryId:string;live:boolean}){
+ const [pair,setPair]=useState<{id:string;a:string;b:string}|null>(null),[busy,setBusy]=useState(false),[message,setMessage]=useState('');
+ async function act(choice?:string){setBusy(true);setMessage('');try{const body=choice?{action:'preference',comparison_id:pair?.id,choice}:{action:'compare',query_id:queryId};const r=await fetch('/api/atlas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const data:any=await r.json();if(!r.ok)throw Error(data.error);if(choice)setMessage('Preference saved for human-reviewed training data.');else setPair(data);}catch(e){setMessage((e as Error).message);}finally{setBusy(false);}}
+ return <section className="preference"><h3>Help improve answer quality</h3><p>Compare two answers against the sources. Your choice becomes a training example; saving it does not train a model immediately.</p><button disabled={!live||busy} onClick={()=>void act()}>Generate answer comparison</button>{!live&&<p>Connect the live backend to review answers.</p>}{pair&&<><div className="pair"><article><h4>Answer A</h4><p>{pair.a}</p></article><article><h4>Answer B</h4><p>{pair.b}</p></article></div><div className="choices">{['a','b','tie','neither'].map(c=><button key={c} disabled={busy} onClick={()=>void act(c)}>{c==='a'?'Prefer A':c==='b'?'Prefer B':c==='tie'?'Equally good':'Neither is good'}</button>)}</div></>}<p aria-live="polite">{message}</p></section>
+}

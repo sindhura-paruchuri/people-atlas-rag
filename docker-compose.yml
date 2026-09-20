@@ -1,0 +1,55 @@
+x-python: &python
+  build: ./backend
+  env_file: .env
+  restart: unless-stopped
+  networks: [atlas]
+x-agent: &agent
+  <<: *python
+  command: uvicorn agents:app --host 0.0.0.0 --port 8000
+  depends_on: [mcp]
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: atlas
+      MYSQL_USER: atlas
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Set MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./backend/schema.sql:/docker-entrypoint-initdb.d/001-schema.sql:ro
+    networks: [atlas]
+    healthcheck:
+      test: [CMD-SHELL, 'mysqladmin ping -h localhost --silent']
+      interval: 5s
+      timeout: 3s
+      retries: 30
+  mcp:
+    <<: *python
+    command: python mcp_server.py
+    depends_on:
+      mysql: {condition: service_healthy}
+  retrieval:
+    <<: *agent
+    environment: {AGENT_ROLE: retrieval}
+  research:
+    <<: *agent
+    environment: {AGENT_ROLE: research}
+  answer:
+    <<: *agent
+    environment: {AGENT_ROLE: answer}
+  api:
+    <<: *python
+    ports: ['127.0.0.1:8000:8000']
+    depends_on: [retrieval, research, answer]
+  ingest:
+    <<: *python
+    profiles: [tools]
+    restart: "no"
+    command: python ingest.py
+    depends_on:
+      mysql: {condition: service_healthy}
+volumes:
+  mysql-data:
+networks:
+  atlas:
